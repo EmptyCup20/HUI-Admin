@@ -60,6 +60,12 @@ require(["jquery", "underscore", "backbone", "bootstrap"], function () {
                     //作品池管理
                     "docManage": "docManage",
                     "docManageEdit(/:id)": "docManageEdit",
+                    
+                    /**
+                     * 语言设计管理
+                     */
+                    "designManage": "designManage",
+                    "designManageEdit(/:id)": "designManageEdit",
 
                     //特殊
                     "*action": "iconCollection"
@@ -108,7 +114,7 @@ require(["jquery", "underscore", "backbone", "bootstrap"], function () {
                 },
 
                 docManage: function () {
-                    require(["/javascript/doc/docManage.js", "/javascript/base.js"], function (module) {
+                    require(["/javascript/doc/docManage.js"], function (module) {
                         new module;
                     });
                 },
@@ -118,6 +124,18 @@ require(["jquery", "underscore", "backbone", "bootstrap"], function () {
                         new module(id);
                     });
                 },
+
+                designManage: function () {
+                    require(["/javascript/design/designManage.js"], function (module) {
+                        new module;
+                    });
+                },
+
+                designManageEdit: function (id) {
+                    require(["/javascript/design/designManageEdit.js"], function (module) {
+                        new module(id);
+                    });
+                }
             })
         },
         apiIp:'http://10.20.135.26:7080'
