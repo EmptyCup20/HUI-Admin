@@ -10,7 +10,7 @@ define(["fileupload", "/admin/src/js/util.js"], function () {
 
         initialize: function (id) {
             var that = this;
-            $.get("/html/iconType/collectionEdit/" + id).done(function (data) {
+            $.get("/html/icon/collectionEdit.html").done(function (data) {
                 $(".page").html(data);
                 //定义视图作用域
                 that.setElement("#collectionEdit");

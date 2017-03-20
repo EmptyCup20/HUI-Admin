@@ -2,21 +2,27 @@
  * Created by zhengjunling on 2016/12/6.
  */
 require.config({
-    baseUrl: "/plugins/",
+    baseUrl: "/",
     paths: {
-        "jquery": "jquery-1.11.3.min",
-        "underscore": "underscore-min",
-        "backbone": "backbone-min",
-        "bootstrap": "bootstrap/js/bootstrap.min",
-        "bsTable": "bootstrap-table/bootstrap-table",
-        "wizard": "bootstrap-wizard/jquery.bootstrap.wizard",
-        "markdown": "markdown-js/markdown",
-        "jquery-ui/widget": "fileupload/jquery.ui.widget",
-        "iframe-transport": "fileupload/jquery.iframe-transport",
-        "fileupload": "fileupload/jquery.fileupload"
+        "jquery": "plugins/jquery-1.11.3.min",
+        "underscore": "plugins/underscore-min",
+        "backbone": "plugins/backbone-min",
+        "util": "javascript/util",
+        "bootstrap": "plugins/bootstrap/js/bootstrap.min",
+        "bsTable": "plugins/bootstrap-table/bootstrap-table",
+        "wizard": "plugins/bootstrap-wizard/jquery.bootstrap.wizard",
+        "markdown": "plugins/markdown-js/markdown",
+        "jquery-ui/widget": "plugins/fileupload/jquery.ui.widget",
+        "iframe-transport": "plugins/fileupload/jquery.iframe-transport",
+        "fileupload": "plugins/fileupload/jquery.fileupload",
+        "alertify": "plugins/alertify/alertify",
+        "pace": "plugins/pace/pace"
     },
     //定义依赖
     shim: {
+        "util": {
+            deps: ["jquery"]
+        },
         "backbone": {
             deps: ["underscore", "jquery"]
         },
@@ -38,7 +44,18 @@ require.config({
     }
 });
 
-require(["jquery", "underscore", "backbone", "bootstrap"], function () {
+require(["require", "backbone", "bootstrap", "util", "alertify", "pace"], function (require) {
+    window.alertify = require("alertify");
+    window.pace = require("pace");
+
+    function startPace() {
+        pace.restart({
+            document: false
+        });
+    }
+
+    startPace();
+
     window.App = {
         Routers: {
             //主路由
@@ -66,62 +83,71 @@ require(["jquery", "underscore", "backbone", "bootstrap"], function () {
                 },
 
                 iconCollection: function () {
-                    require(["/javascript/icon/collectionManage.js"], function (module) {
+                    startPace();
+                    require(["javascript/icon/collectionManage.js"], function (module) {
                         new module;
                     });
                 },
 
                 collectionAdd: function () {
-                    require(["/javascript/icon/collectionAdd.js"], function (module) {
+                    startPace();
+                    require(["javascript/icon/iconCollectionAdd.js"], function (module) {
                         new module();
                     });
                 },
 
                 collectionEdit: function (id) {
-                    require(["/javascript/icon/collectionEdit.js"], function (module) {
+                    startPace();
+                    require(["javascript/icon/iconCollectionEdit.js"], function (module) {
                         new module(id);
                     });
                 },
 
                 iconManage: function () {
-                    require(["/javascript/icon/iconManage.js"], function (module) {
+                    startPace();
+                    require(["javascript/icon/iconManage.js"], function (module) {
                         new module;
                     });
                 },
 
                 editIcon: function (iconId) {
-                    require(["/javascript/icon/editIcon.js"], function (module) {
+                    startPace();
+                    require(["javascript/icon/editIcon.js"], function (module) {
                         new module(iconId);
                     });
                 },
 
                 uikitManage: function () {
-                    require(["/javascript/uikit/uikitManage.js"], function (module) {
+                    startPace();
+                    require(["javascript/uikit/uikitManage.js"], function (module) {
                         new module;
                     });
                 },
 
                 uikitEdit: function (id) {
-                    require(["/javascript/uikit/uikitEdit.js"], function (module) {
+                    startPace();
+                    require(["javascript/uikit/uikitEdit.js"], function (module) {
                         new module(id);
                     });
                 },
 
                 docManage: function () {
-                    require(["/javascript/doc/docManage.js", "/javascript/base.js"], function (module) {
+                    startPace();
+                    require(["javascript/doc/docManage.js", "/javascript/base.js"], function (module) {
                         new module;
                     });
                 },
 
                 docManageEdit: function (id) {
-                    require(["/javascript/doc/docManageEdit.js"], function (module) {
+                    startPace();
+                    require(["javascript/doc/docManageEdit.js"], function (module) {
                         new module(id);
                     });
                 },
             })
         },
-        apiIp:'http://10.20.135.26:7080'
+        apiIp: 'http://10.20.134.30:7080'
     };
     new App.Routers.Main();
     Backbone.history.start();
-})
+});

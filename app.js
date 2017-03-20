@@ -13,6 +13,6 @@ app.use('/',function(req,res){
     res.sendFile(indexPath);
 });
 
-var server = app.listen(8080,function(){
-    console.log('server is started at:127.0.0.1:8080');
+var server = app.listen(7001,function(){
+    console.log('server is started at:127.0.0.1:7001');
 });

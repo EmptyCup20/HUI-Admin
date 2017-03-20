@@ -4,8 +4,8 @@
 define(['bsTable'], function () {
     var IconCollection = Backbone.View.extend({
         events: {
-            // "click [data-action=delCollection]": "delCollection",//删除图标库
             "click [data-action=del]": "delCollection",//删除图标库
+            "click [data-action=batchDel]": "delCollection",
             "click #collectionList [data-action=edit]": "editCollection"//编辑图标库
         },
 
@@ -44,20 +44,33 @@ define(['bsTable'], function () {
                     })
                 },
                 sidePagination: "server",
+                clickToSelect: true,
                 columns: [{
+                    checkbox: true
+                }, {
                     field: "name",
-                    title: "图标库名称"
+                    title: "图标库名称",
+                    formatter: function (v, rowData) {
+                        return "<a data-action='edit'data-id='" + rowData._id + "'>" + v + "</a>";
+                    }
                 }, {
                     field: "type",
-                    title: "图标类型"
+                    title: "图标类型",
+                    formatter: function (v) {
+                        switch (v) {
+                            case 0:
+                                return "SVG";
+                            case 1:
+                                return "PNG";
+                        }
+                    }
                 }, {
                     title: "操作",
+                    width: 120,
+                    align: "center",
                     formatter: function (v, rowData) {
-                        return "<button class='btn btn-sm btn-icon btn-flat btn-default' type='button' data-action='edit' data-rowid='" + rowData._id + "'>" +
-                            "<i class='glyphicon glyphicon-edit'></i>" +
-                            "</button>" +
-                            "<button class='btn btn-sm btn-icon btn-flat btn-default' type='button' data-action='del' data-rowid='" + rowData._id + "'>" +
-                            "<i class='glyphicon glyphicon-remove'></i>" +
+                        return "<button class='btn btn-sm btn-pure btn-default btn-icon' type='button' title='删除' data-action='del' data-id='" + rowData._id + "'>" +
+                            "<i class='glyphicon glyphicon-trash'></i>" +
                             "</button>";
                     }
                 }],
@@ -66,31 +79,44 @@ define(['bsTable'], function () {
             });
         },
 
-        getDelResId:function(e){
-            var el = $(e.currentTarget);
-            this.$("[data-action=delCollection]").data("id",el.data("rowid"));
-        },
-
         /**
          * 删除图标库
          */
         delCollection: function (e) {
             var that = this;
             var el = $(e.currentTarget);
-            if(confirm("确认删除？")){
-                $.ajax({
-                    url: window.App.apiIp + "/admin/iconType/delIconCollection",
-                    method: "post",
-                    data: {
-                        id: el.data("rowid")
-                    }
-                }).done(function (res) {
-                    alert(res.message);
-                    if(res.success){
-                        that.table.bootstrapTable("refresh");
-                    }
-                })
+            var action = el.data("action");
+            var ids = [];
+            e.stopPropagation();
+            if (action == "batchDel") {
+                var selects = this.table.bootstrapTable("getSelections");
+                if (!selects.length) {
+                    alertify.alert("请选择要删除的图标库");
+                    return;
+                }
+                $.each(selects, function () {
+                    ids.push(this._id);
+                });
+            } else {
+                ids.push(el.data("id"));
             }
+            alertify.confirm("确定删除图标库？", function (e) {
+                if (e) {
+                    $.ajax({
+                        url: window.App.apiIp + "/admin/iconType/delIconCollection",
+                        method: "post",
+                        traditional: true,
+                        data: {
+                            ids: ids
+                        }
+                    }).done(function (res) {
+                        alertify.success(res.message);
+                        if (res.success) {
+                            that.table.bootstrapTable("refresh");
+                        }
+                    })
+                }
+            });
         },
 
         /**
@@ -99,7 +125,8 @@ define(['bsTable'], function () {
          */
         editCollection: function (e) {
             var el = $(e.currentTarget);
-            var collectionId = el.attr("data-rowid");
+            var collectionId = el.data("id");
+            e.stopPropagation();
             window.location.href = "#iconManage/editCollection/" + collectionId;
         }
     });
