@@ -8,6 +8,7 @@ require.config({
         "underscore": "plugins/underscore-min",
         "backbone": "plugins/backbone-min",
         "util": "javascript/util",
+        "base": "javascript/base",
         "bootstrap": "plugins/bootstrap/js/bootstrap.min",
         "bsTable": "plugins/bootstrap-table/bootstrap-table",
         "wizard": "plugins/bootstrap-wizard/jquery.bootstrap.wizard",
@@ -22,6 +23,9 @@ require.config({
     shim: {
         "util": {
             deps: ["jquery"]
+        },
+        "base": {
+            deps: ["jquery", "bootstrap"]
         },
         "backbone": {
             deps: ["underscore", "jquery"]
@@ -44,7 +48,7 @@ require.config({
     }
 });
 
-require(["require", "backbone", "bootstrap", "util", "alertify", "pace"], function (require) {
+require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"], function (require) {
     window.alertify = require("alertify");
     window.pace = require("pace");
 
@@ -139,7 +143,7 @@ require(["require", "backbone", "bootstrap", "util", "alertify", "pace"], functi
 
                 docManage: function () {
                     startPace();
-                    require(["/javascript/doc/docManage.js"], function (module) {
+                    require(["javascript/doc/docManage.js"], function (module) {
                         new module;
                     });
                 },
@@ -152,19 +156,19 @@ require(["require", "backbone", "bootstrap", "util", "alertify", "pace"], functi
                 },
 
                 designManage: function () {
-                    require(["/javascript/design/designManage.js"], function (module) {
+                    require(["javascript/design/designManage.js"], function (module) {
                         new module;
                     });
                 },
 
                 designManageEdit: function (id) {
-                    require(["/javascript/design/designManageEdit.js"], function (module) {
+                    require(["javascript/design/designManageEdit.js"], function (module) {
                         new module(id);
                     });
                 }
             })
         },
-        apiIp:'http://10.20.135.26:7080'
+        apiIp: 'http://10.20.134.30:7080'
     };
     new App.Routers.Main();
     Backbone.history.start();

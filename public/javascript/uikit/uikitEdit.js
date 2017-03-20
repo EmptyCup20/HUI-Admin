@@ -1,7 +1,7 @@
 /**
  * Created by zhengjunling on 2016/12/9.
  */
-define(["/admin/src/js/util.js", "fileupload"], function () {
+define(["fileupload"], function () {
     var UIKITEdit = Backbone.View.extend({
         events: {
             "click [data-action=addContent]": "addContent",
@@ -15,7 +15,8 @@ define(["/admin/src/js/util.js", "fileupload"], function () {
 
         render: function (id) {
             var that = this;
-            $.get("/html/uikit/uikitEdit/" + id).done(function (data) {
+            that.id = id;
+            $.get("/html/uikit/uikitEdit.html").done(function (data) {
                 $(".page").html(data);
 
                 //定义视图作用域
@@ -56,9 +57,9 @@ define(["/admin/src/js/util.js", "fileupload"], function () {
             var that = this;
             $("[name=img]", this.$el).fileupload({
                 url: window.App.apiIp + "/admin/upload/imgUpload",
-                formData : {
-                    name : "img",
-                    type : "png,jpg"
+                formData: {
+                    name: "img",
+                    type: "png,jpg"
                 },
                 done: function (t, result) {
                     var data = result.result;
@@ -71,9 +72,9 @@ define(["/admin/src/js/util.js", "fileupload"], function () {
             });
             $("[name=attachment]", this.$el).fileupload({
                 url: window.App.apiIp + "/admin/upload/imgUpload",
-                formData : {
-                    name : "attachment",
-                    type : "psd"
+                formData: {
+                    name: "attachment",
+                    type: "psd"
                 },
                 done: function (t, result) {
                     var data = result.result;

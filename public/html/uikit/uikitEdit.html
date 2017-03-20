@@ -1,13 +1,15 @@
 <div class="page-header">
-    <h1 class="page-title">UIKIT-<%= data.name %></h1>
+    <h1 class="page-title">UIKIT</h1>
 </div>
 <div class="page-content" id="uikitEdit">
     <div class="row">
         <div class="col-lg-6">
-            <% data.content.forEach(function(item){ %>
+            <!--<% data.content.forEach(function(item){ %>-->
             <div class="panel" data-id="<%- item._id %>">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><%= item.name %></h3>
+                    <h3 class="panel-title">
+                        <!--<%= item.name %>-->
+                    </h3>
                     <div class="panel-actions">
                         <a class="panel-action icon wb-close" data-action="close"><i class="glyphicon glyphicon-remove"></i></a>
                     </div>
@@ -16,7 +18,7 @@
                     <img src="<%- item.img_url %>">
                 </div>
             </div>
-            <% }) %>
+            <!--<% }) %>-->
         </div>
     </div>
 

@@ -2,7 +2,7 @@
  * Created by zhengjunling on 2016/12/9.
  */
 define(['bsTable'], function () {
-    var IconCollection = Backbone.View.extend({
+    return Backbone.View.extend({
         events: {
             "click [data-action=del]": "delCollection",//删除图标库
             "click [data-action=batchDel]": "delCollection",
@@ -130,6 +130,4 @@ define(['bsTable'], function () {
             window.location.href = "#iconManage/editCollection/" + collectionId;
         }
     });
-
-    return IconCollection;
 });

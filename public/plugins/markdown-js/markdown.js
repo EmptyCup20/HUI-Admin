@@ -4,10 +4,10 @@ if (typeof define !== 'function') {
 
 // Include all our dependencies and return the resulting library.
 
-define(['markdown-js/parser',
-    'markdown-js/markdown_helpers',
-    'markdown-js/render_tree',
-    'markdown-js/dialects/gruber',
-    'markdown-js/dialects/maruku'], function (Markdown) {
+define(['plugins/markdown-js/parser',
+    'plugins/markdown-js/markdown_helpers',
+    'plugins/markdown-js/render_tree',
+    'plugins/markdown-js/dialects/gruber',
+    'plugins/markdown-js/dialects/maruku'], function (Markdown) {
     return Markdown;
 });

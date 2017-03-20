@@ -20,11 +20,11 @@ define(["bsTable"], function (markdown) {
          * 页面初始化
          */
         render: function () {
-
             var that = this;
             $.get("/html/doc/docManage.html").done(function (data) {
                 $(".page").html(data);
                 that.setElement("#workList");
+                that.$table = $('#workTable');
                 that.initTable();
 
             })
@@ -34,7 +34,7 @@ define(["bsTable"], function (markdown) {
          * 初始化表格
          */
         initTable: function () {
-            $('#workTable').bootstrapTable({
+            this.$table.bootstrapTable({
                 url: window.App.apiIp + '/admin/doc/getDocList',
                 queryParams: function (params) {
                     return $.extend(params, {
@@ -42,7 +42,7 @@ define(["bsTable"], function (markdown) {
                         pageNumber: 1
                     })
                 },
-                responseHandler:function(res){
+                responseHandler: function (res) {
                     return res.rows
                 },
                 pageNumber: 1,
@@ -51,18 +51,18 @@ define(["bsTable"], function (markdown) {
                 columns: [{
                     field: 'title',
                     title: '文章标题',
-                    formatter:function(value){
-                        return '<a href="javascript:void(0);">'+value+'</a>'
+                    formatter: function (value) {
+                        return '<a href="javascript:void(0);">' + value + '</a>'
                     },
                     events: {
-                        "click a": function(event,value,row){
-                            window.location.href = '#docManageEdit/'+ row._id;
+                        "click a": function (event, value, row) {
+                            window.location.href = '#docManageEdit/' + row._id;
                         }
                     }
                 }, {
                     field: 'create_at',
                     title: '创建时间',
-                    formatter: function(value,row,index){
+                    formatter: function (value, row, index) {
                         return '<span>' + new Date(value).Format("yyyy-MM-dd hh:mm:ss") + '</span>'
                     }
                 }, {
@@ -79,17 +79,17 @@ define(["bsTable"], function (markdown) {
         delDoc: function (e) {
             var that = this;
             var el = $(e.currentTarget);
-            if(confirm("确认删除？")){
+            if (confirm("确认删除？")) {
                 $.ajax({
-                    url: "/admin/doc/delDoc",
+                    url: window.App.apiIp + "/admin/doc/delDoc",
                     method: "post",
                     data: {
                         id: el.data("rowid")
                     }
                 }).done(function (res) {
-                    if(res.success){
+                    if (res.success) {
                         alert("删除成功");
-                        el.parents("tr").remove();
+                        that.$table.bootstrapTable("refresh");
                     }
                 })
             }
