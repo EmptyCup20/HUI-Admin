@@ -78,6 +78,12 @@ require(["require", "backbone", "bootstrap", "util", "alertify", "pace"], functi
                     "docManage": "docManage",
                     "docManageEdit(/:id)": "docManageEdit",
 
+                    /**
+                     * 语言设计管理
+                     */
+                    "designManage": "designManage",
+                    "designManageEdit(/:id)": "designManageEdit",
+
                     //特殊
                     "*action": "iconCollection"
                 },
@@ -133,7 +139,7 @@ require(["require", "backbone", "bootstrap", "util", "alertify", "pace"], functi
 
                 docManage: function () {
                     startPace();
-                    require(["javascript/doc/docManage.js", "/javascript/base.js"], function (module) {
+                    require(["/javascript/doc/docManage.js"], function (module) {
                         new module;
                     });
                 },
@@ -144,9 +150,21 @@ require(["require", "backbone", "bootstrap", "util", "alertify", "pace"], functi
                         new module(id);
                     });
                 },
+
+                designManage: function () {
+                    require(["/javascript/design/designManage.js"], function (module) {
+                        new module;
+                    });
+                },
+
+                designManageEdit: function (id) {
+                    require(["/javascript/design/designManageEdit.js"], function (module) {
+                        new module(id);
+                    });
+                }
             })
         },
-        apiIp: 'http://10.20.134.30:7080'
+        apiIp:'http://10.20.135.26:7080'
     };
     new App.Routers.Main();
     Backbone.history.start();
