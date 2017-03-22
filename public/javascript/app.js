@@ -5,11 +5,11 @@ require.config({
     baseUrl: "/",
     paths: {
         "jquery": "plugins/jquery-1.11.3.min",
-        "underscore": "plugins/underscore-min",
+        "underscore": "plugins/underscore/underscore-min",
         "backbone": "plugins/backbone-min",
         "util": "javascript/util",
         "base": "javascript/base",
-        "bootstrap": "plugins/bootstrap/js/bootstrap.min",
+        "bootstrap": "plugins/bootstrap/js/bootstrap",
         "bsTable": "plugins/bootstrap-table/bootstrap-table",
         "wizard": "plugins/bootstrap-wizard/jquery.bootstrap.wizard",
         "markdown": "plugins/markdown-js/markdown",
@@ -25,7 +25,7 @@ require.config({
             deps: ["jquery"]
         },
         "base": {
-            deps: ["jquery", "bootstrap"]
+            deps: ["jquery", "bootstrap", "underscore"]
         },
         "backbone": {
             deps: ["underscore", "jquery"]
@@ -55,6 +55,14 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
     function startPace() {
         pace.restart({
             document: false
+        });
+    }
+
+    function viewRender(viewName, modulePath, opts) {
+        var view = window.App.Views[viewName];
+        startPace();
+        view && view.render ? view.render(opts) : require([modulePath], function (module) {
+            window.App.Views[viewName] = new module(opts);
         });
     }
 
@@ -107,9 +115,8 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                 },
 
                 collectionEdit: function (id) {
-                    startPace();
-                    require(["javascript/icon/iconCollectionEdit.js"], function (module) {
-                        new module(id);
+                    viewRender("iconCollectionEdit", "javascript/icon/iconCollectionEdit.js", {
+                        id: id
                     });
                 },
 
@@ -168,6 +175,7 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                 }
             })
         },
+        Views: {},
         apiIp: 'http://10.20.134.30:7080'
     };
     new App.Routers.Main();

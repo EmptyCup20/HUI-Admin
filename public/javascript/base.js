@@ -3,67 +3,94 @@
  */
 
 
-
-
-(function (factory) {
+;(function (factory) {
     //模块化
     if (typeof define === 'function' && define.amd) {
         define(['jquery'], factory);
     } else if (typeof exports === 'object') {
         module.exports = factory(require('jquery'));
     } else factory(jQuery);
-
 })(function ($) {
     //对bootstrap模态框进行封装，方便动态调用
-    var BootstrapModel = function (el, options) {
-        this.el = $(el);
-        this.opts = $.extend({}, BootstrapModel.DEFAULT_OPTIONS, options);
+    var BootstrapModel = function (element, options) {
+        this.$element = $(element);
+        this.$body = $("body");
+        this.options = $.extend({}, BootstrapModel.DEFAULT_OPTIONS, options);
         this.init();
     };
 
     BootstrapModel.DEFAULT_OPTIONS = $.extend({}, $.fn.modal.Constructor.DEFAULTS, {
+        showHeader: true,
+        showFooter: true,
+        title: "",
+        content: "",
+        buttons: [{
+            text: "取消",
+            className: "btn btn-default",
+            action: "cancel"
+        }, {
+            text: "确定",
+            className: "btn btn-primary",
+            action: "submit"
+        }]
     });
 
-    BootstrapModel.template = {
-        //外层容器
-        container: '<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">' +
-        '               <div class="modal-dialog">' +
-        '                   <div class="modal-content"></div>' +
-        '               </div>' +
-        '           </div>',
+    BootstrapModel.template = '<div class="modal-dialog">' +
+        '                       <div class="modal-content">' +
+        '                       <% if(showHeader){ %>' +
+        '                           <div class="modal-header">' +
+        '                               <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
+        '                               <h4 class="modal-title"><%= title %></h4>' +
+        '                           </div>' +
+        '                       <% } %>' +
+        '                           <div class="modal-body"><%= content %></div>' +
+        '                       <% if(showFooter&&buttons.length){ %>' +
+        '                           <div class="modal-footer">' +
+        '                           <% buttons.forEach(function(e){ %>' +
+        '                               <button type="button" class="<%= e.className %>"' +
+        '                               <% if(e.action==="cancel"){ %> data-dismiss="modal"<% } %>' +
+        '                                data-action="<%= e.action %>"><%= e.text %></button>' +
+        '                           <% }) %>' +
+        '                           </div>' +
+        '                       <% } %>' +
+        '                       </div>' +
+        '                   </div>';
 
-        //内容区域
-        body: '<div class="modal-body"></div>',
+    BootstrapModel.prototype = $.extend({}, $.fn.modal.Constructor.prototype);
 
-        //头部区域
-        header: '<div class="modal-header">' +
-        '           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
-        '           <h4 class="modal-title">添加目录</h4>' +
-        '       </div>',
-
-        //底部区域
-        footer: '<div class="modal-footer">' +
-        '           <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>' +
-        '           <button type="button" class="btn btn-primary" data-action="submit">添加</button>' +
-        '        </div>'
+    BootstrapModel.prototype.init = function () {
+        var _this = this;
+        this.$element.appendTo(this.$body).addClass("modal fade").attr("role", "dialog");
+        this.$element.on("show.bs.modal", $.proxy(this.render, this));
+        this.render();
+        this.$element.on("click", ".modal-footer [data-action]", function () {
+            var action = $(this).data("action");
+            var actionEvent = $.Event(action + ".bs.modal", {
+                relatedTarget: this
+            });
+            _this.$element.trigger(actionEvent);
+        });
     };
 
-    BootstrapModel.prototype = {
-        init: function () {
+    BootstrapModel.prototype.render = function () {
+        this.$element.html(_.template(BootstrapModel.template)(this.options));
+    };
 
-        }
+    BootstrapModel.prototype.set = function (opts) {
+        this.options = $.extend({}, this.options, opts);
+        this.render();
     };
 
 
-    $.fn.bootstrapmodel = function (option) {
+    $.fn.bsmodel = function (option) {
         var params = arguments;
         return this.each(function () {
             var $this = $(this),
-                data = $this.data('bootstrapmodel'),
+                data = $this.data('bsmodel'),
                 options = 'object' === typeof option && option;
             if (!data) {
                 data = new BootstrapModel(this, options);
-                $this.data('bootstrapmodel', data);
+                $this.data('bsmodel', data);
             }
             if ('string' === typeof option) {
                 data[option].apply(data, Array.prototype.slice.call(params, 1));
@@ -73,7 +100,7 @@
 });
 
 
-(function(){
+(function () {
     // 对Date的扩展，将 Date 转化为指定格式的String
 // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
 // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
