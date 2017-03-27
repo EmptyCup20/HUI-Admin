@@ -52,6 +52,8 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
     window.alertify = require("alertify");
     window.pace = require("pace");
 
+    alertify.set({delay: 3000});
+
     function startPace() {
         pace.restart({
             document: false

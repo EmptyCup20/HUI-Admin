@@ -1,9 +1,11 @@
 /**
  * Created by zhengjunling on 2016/12/9.
  */
-define(['bsTable'], function () {
+define(function (require, exports, module) {
+    require('bsTable');
     return Backbone.View.extend({
         events: {
+            "click [data-action=add]": "addCollection",//新建图标库
             "click [data-action=del]": "delCollection",//删除图标库
             "click [data-action=batchDel]": "delCollection",
             "click #collectionList [data-action=edit]": "editCollection"//编辑图标库
@@ -24,10 +26,21 @@ define(['bsTable'], function () {
                 //定义视图作用域
                 that.setElement("#iconCollection");
 
+
                 that.table = $("#collectionList");
 
                 //初始化表格
                 that.loadTable();
+
+                var addModalTemp = that.$("#collectionAddModal").html();
+
+                that.$addModal = that.$("#iconCollectionAdd").bsmodel({
+                    title: "新建图标库",
+                    content: addModalTemp,
+                    ok: "添加"
+                }).on("submit.bs.modal", function () {
+                    that.collectionAddSubmit();
+                });
             })
         },
 
@@ -36,7 +49,7 @@ define(['bsTable'], function () {
          */
         loadTable: function () {
             this.table.bootstrapTable({
-                url: window.App.apiIp + "/admin/iconType/getIconCollection",
+                url: window.App.apiIp + "/admin/iconCollection/getIconCollection",
                 queryParams: function (params) {
                     return $.extend({}, params, {
                         pageSize: params.limit,
@@ -79,6 +92,10 @@ define(['bsTable'], function () {
             });
         },
 
+        addCollection: function () {
+
+        },
+
         /**
          * 删除图标库
          */
@@ -103,7 +120,7 @@ define(['bsTable'], function () {
             alertify.confirm("确定删除图标库？", function (e) {
                 if (e) {
                     $.ajax({
-                        url: window.App.apiIp + "/admin/iconType/delIconCollection",
+                        url: window.App.apiIp + "/admin/iconCollection/delIconCollection",
                         method: "post",
                         traditional: true,
                         data: {
@@ -128,6 +145,44 @@ define(['bsTable'], function () {
             var collectionId = el.data("id");
             e.stopPropagation();
             window.location.href = "#iconManage/editCollection/" + collectionId;
+        },
+
+        validate: function (formData) {
+            var $addForm = this.$("#collectionAddForm");
+            if (!formData.name) {
+                alertify.alert("请输入名称", function () {
+                    $("[name=name]", $addForm).focus();
+                });
+                return false;
+            }
+            return true;
+        },
+
+        /**
+         * 提交表单
+         */
+        collectionAddSubmit: function () {
+            var that = this;
+            var formData = this.$("#collectionAddForm").serializeJson();
+            if (!this.validate(formData)) return;
+            $.ajax({
+                url: window.App.apiIp + "/admin/iconCollection/addIconCollection",
+                method: "post",
+                data: formData
+            }).done(function (res) {
+                if (res.success) {
+                    that.$addModal.bsmodel("hide");
+                    that.table.bootstrapTable("refresh");
+                    alertify.success("添加成功");
+                    alertify.confirm("添加成功！继续前往上传图标？", function (e) {
+                        if (e) {
+                            window.location.href = "#iconManage/editCollection/" + res.data._id;
+                        }
+                    });
+                } else {
+                    alertify.alert("添加失败，请重试");
+                }
+            })
         }
     });
 });

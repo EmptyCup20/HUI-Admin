@@ -6,36 +6,58 @@
         <div class="col-lg-12">
             <div class="panel">
                 <div class="panel-body container-fluid">
+                    <div class="attachment-wrap">
+                        <% if(attachment_name){ %>
+                        <div class="alert alert-success">
+                            附件：
+                            <i class="glyphicon glyphicon-paperclip"></i>
+                            <a href="<%= attachment_url %>"><%= attachment_name %></a>
+                        </div>
+                        <% }else{ %>
+                        <div class="alert alert-warning">
+                            暂无附件，请上传
+                        </div>
+                        <% } %>
+                    </div>
                     <div class="action-buttons">
                         <button class="btn btn-primary btn-file" type="button">
                             上传图标
                             <input type="file" id="iconUpload" name="iconFile" multiple="multiple">
                         </button>
-                        <button class="btn btn-default" type="button" data-action="collectionInfoSet" data-toggle="modal" data-target="#collectionInfoSet">图标库设置</button>
-                        <button class="btn btn-default" type="button" data-action="delIcon">删除图标</button>
-                        <button class="btn btn-default" type="button">上传psd文件</button>
+                        <button class="btn btn-default" type="button" data-action="collectionInfoSet" data-toggle="bsmodal" data-target="#collectionInfoSet">图标库设置</button>
+                        <button class="btn btn-default" type="button" data-action="delIcon" disabled="disabled">删除图标</button>
+                        <button class="btn btn-default btn-file" type="button">
+                            <% if(attachment_name){ %>
+                            更新psd文件
+                            <% }else{ %>
+                            上传psd文件
+                            <% } %>
+                            <input type="file" id="attachmentUpload" name="psdFile">
+                        </button>
                     </div>
+
+
+                    <% if(icons.length){ %>
+                    <div class="icon-list-box row" id="iconListBox">
+                        <% icons.forEach(function(icon){ %>
+                        <div class="col-lg-1 col-md-2 col-sm-4 icon-preview-wrap">
+                            <div class="icon-preview" data-id="<%= icon._id %>">
+                                <%= icon.svgXML %>
+                                <span class="icon-title"><%= icon.name %></span>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                    <% }else{ %>
                     <div class="drag-zone" id="dragZone">
-                        <i class="glyphicon glyphicon-download-alt icon-drag"></i>
+                        <i class="glyphicon glyphicon-open icon-drag"></i>
                         <h3>拖放图标到此处完成上传</h3>
                         <p>仅支持svg和png格式文件</p>
                     </div>
-                    <div class="icon-list-box row" id="iconListBox"></div>
+                    <% } %>
                 </div>
             </div>
         </div>
     </div>
     <div id="collectionInfoSet"></div>
-    <script type="text/template" id="iconListTemp">
-        <% if(icons && icons.length){ %>
-        <% icons.forEach(function(icon){ %>
-        <div class="col-lg-1 col-md-2 col-sm-4 icon-preview-wrap">
-            <div class="icon-preview" data-id="<%= icon._id %>">
-                <img src="<%= icon.url %>">
-                <span class="icon-title"><%= icon.name %></span>
-            </div>
-        </div>
-        <% }) %>
-        <% } %>
-    </script>
 </div>

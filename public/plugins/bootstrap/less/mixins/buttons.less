@@ -43,6 +43,29 @@
   }
 }
 
+.button-outline-variant(@color; @background; @border) {
+  color: @color;
+  background-color: @background;
+  border-color: @border;
+
+  &:hover,
+  &:active,
+  &.active{
+    color: #fff;
+    background-color: @color;
+    border-color: @border;
+  }
+  &.active:hover,
+  &:focus,
+  &.focus,
+  &.active:active,
+  &.active:focus{
+    color: #fff;
+    background-color: darken(@color, 10%);
+    border-color: darken(@border, 12%);
+  }
+}
+
 // Button sizes
 .button-size(@padding-vertical; @padding-horizontal; @font-size; @line-height; @border-radius) {
   padding: @padding-vertical @padding-horizontal;

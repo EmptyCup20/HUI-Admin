@@ -83,6 +83,33 @@
     .button-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
 }
 
+//outline buttons
+.btn-outline{
+    &.btn-primary {
+        .button-outline-variant(@btn-primary-bg; @btn-outline-bg; @btn-primary-border);
+    }
+
+    // Success appears as green
+    &.btn-success {
+        .button-outline-variant(@btn-success-bg; @btn-outline-bg; @btn-success-border);
+    }
+
+    // Info appears as blue-green
+    &.btn-info {
+        .button-outline-variant(@btn-info-bg; @btn-outline-bg; @btn-info-border);
+    }
+
+    // Warning appears as orange
+    &.btn-warning {
+        .button-outline-variant(@btn-warning-bg; @btn-outline-bg; @btn-warning-border);
+    }
+
+    // Danger and error appear as red
+    &.btn-danger {
+        .button-outline-variant(@btn-danger-bg; @btn-outline-bg; @btn-danger-border);
+    }
+}
+
 // Link buttons
 // -------------------------
 

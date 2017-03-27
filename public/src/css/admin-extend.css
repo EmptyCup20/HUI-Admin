@@ -290,7 +290,7 @@ body.md-nooverflow {
     cursor: pointer;
 }
 
-.icon-preview:hover{
+.icon-preview:hover {
     background: #f9f9f9;
 }
 
@@ -319,7 +319,7 @@ body.md-nooverflow {
     display: block;
 }
 
-.icon-preview img {
+.icon-preview svg {
     display: inline-block;
     width: 32px;
     height: 32px;
@@ -567,7 +567,23 @@ body.md-nooverflow {
     text-align: center;
 }
 
+.drag-zone.dragover {
+    border-color: #62A8EA;
+}
+
 .drag-zone .icon-drag {
     font-size: 40px;
     color: #bbb;
+}
+
+.modal-body > form {
+    padding: 15px 0;
+}
+
+.attachment-wrap {
+    margin-bottom: 20px;
+}
+
+.attachment-wrap i{
+    color: #999;
 }

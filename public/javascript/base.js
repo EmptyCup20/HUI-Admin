@@ -16,6 +16,8 @@
         this.$element = $(element);
         this.$body = $("body");
         this.options = $.extend({}, BootstrapModel.DEFAULT_OPTIONS, options);
+        this.isShown = null;
+        this.scrollbarWidth = 0;
         this.init();
     };
 
@@ -24,15 +26,9 @@
         showFooter: true,
         title: "",
         content: "",
-        buttons: [{
-            text: "取消",
-            className: "btn btn-default",
-            action: "cancel"
-        }, {
-            text: "确定",
-            className: "btn btn-primary",
-            action: "submit"
-        }]
+        buttons: [],
+        ok: "确定",
+        cancel: "取消"
     });
 
     BootstrapModel.template = '<div class="modal-dialog">' +
@@ -44,13 +40,18 @@
         '                           </div>' +
         '                       <% } %>' +
         '                           <div class="modal-body"><%= content %></div>' +
-        '                       <% if(showFooter&&buttons.length){ %>' +
+        '                       <% if(showFooter){ %>' +
         '                           <div class="modal-footer">' +
+        '                       <% if(buttons.length){ %>' +
         '                           <% buttons.forEach(function(e){ %>' +
         '                               <button type="button" class="<%= e.className %>"' +
-        '                               <% if(e.action==="cancel"){ %> data-dismiss="modal"<% } %>' +
+        '                               <% if(e.dismiss){ %> data-dismiss="modal"<% } %>' +
         '                                data-action="<%= e.action %>"><%= e.text %></button>' +
         '                           <% }) %>' +
+        '                       <% }else{ %>' +
+        '                               <button type="button" class="btn btn-default" data-dismiss="modal"><%= cancel %></button>' +
+        '                               <button type="button" class="btn btn-primary" data-action="submit"><%= ok %></button>' +
+        '                       <% } %>' +
         '                           </div>' +
         '                       <% } %>' +
         '                       </div>' +
@@ -60,7 +61,7 @@
 
     BootstrapModel.prototype.init = function () {
         var _this = this;
-        this.$element.appendTo(this.$body).addClass("modal fade").attr("role", "dialog");
+        this.$element.addClass("modal fade").attr("role", "dialog");
         this.$element.on("show.bs.modal", $.proxy(this.render, this));
         this.render();
         this.$element.on("click", ".modal-footer [data-action]", function () {
@@ -97,6 +98,23 @@
             }
         });
     };
+
+    $(document).on('click.bs.modal.data-api', '[data-toggle="bsmodal"]', function (e) {
+        var $this = $(this);
+        var href = $this.attr('href');
+        var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, '')));
+        var option = $target.data('bsmodel') ? 'toggle' : $.extend({remote: !/#/.test(href) && href}, $target.data(), $this.data());
+
+        if ($this.is('a')) e.preventDefault();
+
+        $target.one('show.bs.modal', function (showEvent) {
+            if (showEvent.isDefaultPrevented()) return;
+            $target.one('hidden.bs.modal', function () {
+                $this.is(':visible') && $this.trigger('focus');
+            });
+        });
+        $.fn.bsmodel.call($target, option, this);
+    })
 });
 
 
