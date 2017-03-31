@@ -1,0 +1,42 @@
+<div class="page-header">
+    <h1 class="page-title"><% if(_id){ %>编辑动效<% }else{ %>添加动效<% } %></h1>
+</div>
+<div class="page-content" id="animateModify">
+    <div class="panel">
+        <div class="panel-body container-fluid">
+            <form>
+                <div class="form-group">
+                    <input type="text" name="title" class="form-control" value="<%= title %>" placeholder="请输入标题...">
+                </div>
+            </form>
+            <div class="cover-wrapper">
+                <% if(cover_img_url){ %>
+                <div class="cover-img-wrapper btn-file">
+                    <img class="cover-img" src="<%= cover_img_url %>">
+                    <input type="file" name="animateCover">
+                </div>
+                <% }else{ %>
+                <div class="btn-upload-cover btn-file">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <p>上传封面</p>
+                    <input type="file" name="animateCover">
+                </div>
+                <% } %>
+            </div>
+            <% if(attachment_name){ %>
+            <div class="alert alert-success">
+                附件：
+                <i class="glyphicon glyphicon-paperclip"></i>
+                <a href="<%= attachment_url %>"><%= attachment_name %></a>
+                <a class="btn-file">重新上传<input type="file" name="attachmentFile"></a>
+            </div>
+            <% }else{ %>
+            <div class="alert alert-warning">
+                暂无附件<a class="btn-file">点此上传<input type="file" name="attachmentFile"></a>
+            </div>
+            <% } %>
+
+            <div id="animateContentEditor"></div>
+        </div>
+    </div>
+</div>

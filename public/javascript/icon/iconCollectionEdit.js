@@ -120,7 +120,7 @@ define(["fileupload"], function () {
                 collection_id: this.collectionModel.get("_id")
             };
             //图标上传
-            $("#iconUpload").fileupload({
+            this.$("#iconUpload").fileupload({
                 url: window.App.apiIp + "/admin/upload/iconUpload",
                 formData: formData,
                 singleFileUploads: false,
@@ -156,7 +156,7 @@ define(["fileupload"], function () {
                 }
             });
             //psd附件上传
-            $("#attachmentUpload").fileupload({
+            this.$("[name=psdFile]").fileupload({
                 url: window.App.apiIp + "/admin/iconCollection/uploadAttachment",
                 formData: {
                     name: "psdFile",

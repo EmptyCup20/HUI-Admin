@@ -83,7 +83,7 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     //动效资源管理
                     "animateManage": "animateManage",
                     "animateAdd": "animateModify",
-                    "animateEdit": "animateModify",
+                    "animateEdit/:id": "animateModify",
 
                     //作品池管理
                     "docManage": "docManage",
@@ -126,8 +126,10 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     viewRender("animateManage", "javascript/animate/animateManage");
                 },
 
-                animateModify: function () {
-
+                animateModify: function (id) {
+                    viewRender("animateModify", "javascript/animate/animateModify", {
+                        id: id
+                    });
                 },
 
                 docManage: function () {

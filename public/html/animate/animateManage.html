@@ -1,13 +1,13 @@
 <div class="page-header">
-    <h1 class="page-title">图标管理</h1>
+    <h1 class="page-title">动效管理</h1>
 </div>
 <div class="page-content" id="animateManage">
     <div class="panel">
         <div class="panel-body container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div id="collectionToolbar">
-                        <a class="btn btn-primary" href="#animateAdd">添加动效资源</a>
+                    <div id="animateToolbar">
+                        <a class="btn btn-primary" href="#animateAdd">添加动效</a>
                         <a class="btn btn-default" data-action="batchDel">批量删除</a>
                     </div>
                     <table id="animateList"></table>
@@ -15,28 +15,4 @@
             </div>
         </div>
     </div>
-    <div id="iconCollectionAdd"></div>
-    <script type="text/template" id="collectionAddModal">
-        <form class="form-horizontal" id="collectionAddForm">
-            <div class="form-group">
-                <label class="control-label col-md-3">名称</label>
-                <div class="col-md-6">
-                    <input class="form-control" type="text" name="name">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-3">类型</label>
-                <div class="col-md-6">
-                    <div class="btn-group" data-toggle="buttons" role="group">
-                        <label class="btn btn-outline btn-primary active">
-                            <input autocomplete="off" type="radio" name="type" value="0" checked="checked">SVG
-                        </label>
-                        <label class="btn btn-outline btn-primary">
-                            <input autocomplete="off" type="radio" name="type" value="1">PNG
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </script>
 </div>

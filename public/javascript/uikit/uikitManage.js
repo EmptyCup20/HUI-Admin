@@ -59,12 +59,13 @@ define(['bsTable'], function () {
                     }
                 }, {
                     title: "操作",
+                    align: "center",
                     formatter: function (v, rowData) {
-                        return "<button class='btn btn-sm btn-icon btn-flat btn-default' type='button' data-action='edit' data-rowid='" + rowData._id + "'>" +
+                        return "<button class='btn btn-sm btn-pure btn-default btn-icon' type='button' data-action='edit' data-rowid='" + rowData._id + "'>" +
                             "<i class='glyphicon glyphicon-edit'></i>" +
                             "</button>" +
-                            "<button class='btn btn-sm btn-icon btn-flat btn-default' type='button' data-action='del' data-rowid='" + rowData._id + "'>" +
-                            "<i class='glyphicon glyphicon-remove'></i>" +
+                            "<button class='btn btn-sm btn-pure btn-default btn-icon' type='button' data-action='del' data-rowid='" + rowData._id + "'>" +
+                            "<i class='glyphicon glyphicon-trash'></i>" +
                             "</button>";
                     }
                 }],

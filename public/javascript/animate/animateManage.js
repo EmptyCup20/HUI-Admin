@@ -4,6 +4,12 @@
 define(function (require) {
     require('bsTable');
     return Backbone.View.extend({
+        events: {
+            "click [data-action=del]": "delAnimate",//删除图标库
+            "click [data-action=batchDel]": "delAnimate",
+            "click [data-action=edit]": "editAnimate"//编辑图标库
+        },
+
         initialize: function () {
             this.render();
         },
@@ -22,19 +28,6 @@ define(function (require) {
                 that.$table = that.$("#animateList");
 
                 that.loadTable();
-
-                ////初始化表格
-                //that.loadTable();
-                //
-                //var addModalTemp = that.$("#collectionAddModal").html();
-                //
-                //that.$addModal = that.$("#iconCollectionAdd").bsmodel({
-                //    title: "新建图标库",
-                //    content: addModalTemp,
-                //    ok: "添加"
-                //}).on("submit.bs.modal", function () {
-                //    that.collectionAddSubmit();
-                //});
             })
         },
 
@@ -55,22 +48,14 @@ define(function (require) {
                 columns: [{
                     checkbox: true
                 }, {
-                    field: "name",
-                    title: "图标库名称",
+                    field: "title",
+                    title: "标题",
                     formatter: function (v, rowData) {
                         return "<a data-action='edit'data-id='" + rowData._id + "'>" + v + "</a>";
                     }
                 }, {
-                    field: "type",
-                    title: "图标类型",
-                    formatter: function (v) {
-                        switch (v) {
-                            case 0:
-                                return "SVG";
-                            case 1:
-                                return "PNG";
-                        }
-                    }
+                    field: "attachment_name",
+                    title: "附件名称"
                 }, {
                     title: "操作",
                     width: 120,
@@ -81,8 +66,52 @@ define(function (require) {
                             "</button>";
                     }
                 }],
-                toolbar: "#collectionToolbar",
+                toolbar: "#animateToolbar",
                 pagination: true
+            });
+        },
+
+        editAnimate: function (e) {
+            var el = $(e.currentTarget);
+            var id = el.data("id");
+            e.stopPropagation();
+            window.location.href = "#animateEdit/" + id;
+        },
+
+        delAnimate: function (e) {
+            var that = this;
+            var el = $(e.currentTarget);
+            var action = el.data("action");
+            var ids = [];
+            e.stopPropagation();
+            if (action == "batchDel") {
+                var selects = this.$table.bootstrapTable("getSelections");
+                if (!selects.length) {
+                    alertify.alert("请选择要删除的动效");
+                    return;
+                }
+                $.each(selects, function () {
+                    ids.push(this._id);
+                });
+            } else {
+                ids.push(el.data("id"));
+            }
+            alertify.confirm("确定删除动效？", function (e) {
+                if (e) {
+                    $.ajax({
+                        url: window.App.apiIp + "/admin/animate/delAnimate",
+                        method: "post",
+                        traditional: true,
+                        data: {
+                            ids: ids
+                        }
+                    }).done(function (res) {
+                        alertify.success(res.message);
+                        if (res.success) {
+                            that.$table.bootstrapTable("refresh");
+                        }
+                    })
+                }
             });
         }
     });

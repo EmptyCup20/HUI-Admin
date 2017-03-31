@@ -9,7 +9,7 @@ define(['showdown', 'fileupload'], function (showdown) {
     var Mdeditor = function (element) {
         this.$el = $(element);
 
-        this.$el.on("input", ".md-input", $.proxy(this._preview, this));
+        this.$el.on("input", ".md-input", $.proxy(this._change, this));
 
         this.$el.on("blur", ".md-input", $.proxy(this._saveCursorPos, this));
 
@@ -37,8 +37,14 @@ define(['showdown', 'fileupload'], function (showdown) {
 
         uploadAccept: "png,jpg,jpeg,gif,bmp",
 
+        //Callback for textarea value change
+        //change: function (data) {},
+
         //Callback for valid before submit
         //validate: function (data) {},
+
+        //Callback for submit
+        //submit: function (data) {},
 
         //Callback for successful submit
         //done: function (res) {},
@@ -86,7 +92,7 @@ define(['showdown', 'fileupload'], function (showdown) {
 
         setValue: function (content) {
             this.$textField.val(content);
-            this._preview();
+            this._change();
         },
 
         _initImgUpload: function () {
@@ -101,7 +107,7 @@ define(['showdown', 'fileupload'], function (showdown) {
                     var res = result.result;
                     if (res.success) {
                         that._insertImgAtCaret(res.data.url);
-                        that._preview();
+                        that._change();
                     }
                 }
             });
@@ -152,6 +158,13 @@ define(['showdown', 'fileupload'], function (showdown) {
             }
         },
 
+        _change: function () {
+            if (this.options.change) {
+                this.options.change(this.$textField.val());
+            }
+            this._preview();
+        },
+
         _preview: function () {
             var $previewbox = this.$el.find(".preview-box");
             var md_str = this.$textField.val();
@@ -177,12 +190,18 @@ define(['showdown', 'fileupload'], function (showdown) {
 
             if (p.validate && !p.validate(content)) return;
 
+            var formData = $.extend({}, this.options.formData, {
+                content: content
+            });
+
+            if (p.submit) {
+                return p.submit(formData);
+            }
+
             $.ajax({
                 url: p.url,
                 method: p.type,
-                data: {
-                    content: content
-                }
+                data: formData
             }).done(function (res) {
                 p.done && p.done(res);
             }).fail(function (err) {
