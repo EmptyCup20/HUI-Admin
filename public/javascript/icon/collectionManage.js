@@ -1,7 +1,7 @@
 /**
  * Created by zhengjunling on 2016/12/9.
  */
-define(function (require, exports, module) {
+define(function (require) {
     require('bsTable');
     return Backbone.View.extend({
         events: {
@@ -150,9 +150,8 @@ define(function (require, exports, module) {
         validate: function (formData) {
             var $addForm = this.$("#collectionAddForm");
             if (!formData.name) {
-                alertify.alert("请输入名称", function () {
-                    $("[name=name]", $addForm).focus();
-                });
+                alertify.error("请输入图标库名称");
+                $("[name=name]", $addForm).focus();
                 return false;
             }
             return true;
@@ -174,7 +173,9 @@ define(function (require, exports, module) {
                     that.$addModal.bsmodel("hide");
                     that.table.bootstrapTable("refresh");
                     alertify.success("添加成功");
+                    alertify.set({labels: {ok: "下一步", cancel: "取消"}});
                     alertify.confirm("添加成功！继续前往上传图标？", function (e) {
+                        alertify.set({labels: {ok: "确定", cancel: "取消"}});
                         if (e) {
                             window.location.href = "#iconManage/editCollection/" + res.data._id;
                         }

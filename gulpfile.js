@@ -16,8 +16,8 @@ gulp.task('lessToCss', function () {
 
 gulp.task('concatCss', function () {
     gulp.src(['public/plugins/bootstrap/dist/css/bootstrap.css',
-        'public/src/css/admin.css',
-        'public/src/css/admin-extend.css'])
+            'public/src/css/admin.css',
+            'public/src/css/admin-extend.css'])
         .pipe(concat('app.css'))
         .pipe(gulp.dest('public/css'));
 });
@@ -25,8 +25,7 @@ gulp.task('concatCss', function () {
 gulp.task('browser-sync', function () {
     browserSync.init({
         proxy: "http://10.20.134.30:7001/",
-        files: ["public/css/**/*",
-            "public/html/**/*"],
+        files: ["index.html", "public/css/**/*", "public/html/**/*"],
         port: 8001
     });
 });

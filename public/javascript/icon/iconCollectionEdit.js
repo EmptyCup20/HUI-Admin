@@ -94,11 +94,9 @@ define(["fileupload"], function () {
         },
 
         renderPage: function () {
-            $(".page").html(_.template(this.template)({
-                icons: this.iconCollection.toJSON(),
-                attachment_name: this.collectionModel.get("attachment_name"),
-                attachment_url: this.collectionModel.get("attachment_url")
-            }));
+            $(".page").html(_.template(this.template)($.extend({
+                icons: this.iconCollection.toJSON()
+            }, this.collectionModel.attributes)));
             this.setElement("#collectionEdit");
             this.iconCollection.length ? this.$("#dragZone").hide() : this.$("#dragZone").show();
             this.$modifyModal = this.$("#collectionInfoSet");
@@ -149,7 +147,12 @@ define(["fileupload"], function () {
                 },
                 always: function (t, result) {
                     var res = result.result;
-                    res.success ? that.iconCollection.update() : alertify.log(res.message);
+                    if (res.success) {
+                        alertify.success(res.message);
+                        that.iconCollection.update();
+                    } else {
+                        alertify.error(res.message);
+                    }
                 }
             });
             //psd附件上传
@@ -251,9 +254,8 @@ define(["fileupload"], function () {
             var $Form = this.$("#collectionEditForm");
             if (!formData._id) return false;
             if (!formData.name) {
-                alertify.alert("请输入名称", function () {
-                    $("[name=name]", $Form).focus();
-                });
+                alertify.error("请输入图标库名称");
+                $("[name=name]", $Form).focus();
                 return false;
             }
             return true;

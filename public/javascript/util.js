@@ -54,4 +54,49 @@
         }
         return serializeObj;
     }
+
+    $.fn.insertImgAtCaret = function (imgUrl) {
+        var el = this.get(0);
+        var imgText = "\r\n![](" + imgUrl + ")\r\n";//md图片插入格式
+        if (document.selection) { // IE
+            var sel = el.createTextRange();
+            var cursorPosition = $(el).data("cursorPosition");
+            el.focus();
+            sel.moveStart('character', cursorPosition);
+            sel.collapse();
+            sel.select();
+            sel.text = imgText;
+            $(el).data("cursorPosition", cursorPosition + imgText.length);
+            el.focus();
+        } else if (el.selectionStart || el.selectionStart == '0') { // 现代浏览器
+            var startPos = el.selectionStart, endPos = el.selectionEnd, scrollTop = el.scrollTop;
+            el.value = el.value.substring(0, startPos) + imgText + el.value.substring(endPos, el.value.length);
+            el.focus();
+            el.selectionStart = startPos + imgText.length;
+            el.selectionEnd = startPos + imgText.length;
+            el.scrollTop = scrollTop;
+        } else {
+            el.value += imgText;
+            el.focus();
+        }
+    }
+
+    $.fn.saveCursorPos=function () {
+        var el = this.get(0);
+        var pos = 0;
+        if ('selectionStart' in el) {
+            pos = el.selectionStart;
+        } else if ('selection' in document) {
+            el.focus();
+            var r = document.selection.createRange();
+            if (r == null) {
+                return 0;
+            }
+            var re = el.createTextRange(), rc = re.duplicate();
+            re.moveToBookmark(r.getBookmark());
+            rc.setEndPoint('EndToStart', re);
+            return rc.text.length;
+        }
+        this.data("cursorPosition", pos);
+    }
 })(jQuery);

@@ -42,7 +42,11 @@
                         <% icons.forEach(function(icon){ %>
                         <div class="col-lg-1 col-md-2 col-sm-4 icon-preview-wrap">
                             <div class="icon-preview" data-id="<%= icon._id %>">
+                                <% if(type=="0"){ %>
                                 <%= icon.svgXML %>
+                                <% }else{ %>
+                                <img src="<%= icon.url %>">
+                                <% } %>
                                 <span class="icon-title"><%= icon.name %></span>
                             </div>
                         </div>

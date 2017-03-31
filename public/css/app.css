@@ -18428,11 +18428,15 @@ body.md-nooverflow {
 }
 
 .preview-box {
-    overflow: auto;
-    height: 596px;
     padding: 15px;
-    border: 1px solid #e4eaec;
-    box-shadow: none;
+    overflow-y: scroll;
+    border-left: 1px solid #e4eaec;
+    background: #fff;
+    word-break: break-all;
+}
+
+.preview-box .placeholder {
+    color: #999;
 }
 
 .preview-box h1 {
@@ -18466,11 +18470,22 @@ body.md-nooverflow {
 
 .md-editor .md-input {
     display: block;
-    width: 100%;
+    width: 50%;
     height: 500px;
     padding: 15px;
-    margin: 2px 0;
     border: 0;
+    float: left;
+    overflow-y: scroll;
+}
+
+.md-editor .preview-box {
+    width: 50%;
+    float: right;
+}
+
+.md-editor .md-input,
+.md-editor .preview-box {
+    height: 500px;
 }
 
 .md-editor .md-input:focus {
@@ -18495,7 +18510,7 @@ body.md-nooverflow {
     width: 100%;
     height: 100%;
     padding-top: 45px;
-    z-index: 9999;
+    z-index: 2000;
 }
 
 .md-editor.md-fullscreen-mode .md-header {
@@ -18505,13 +18520,36 @@ body.md-nooverflow {
     width: 100%;
 }
 
-.md-editor.md-fullscreen-mode .md-footer {
-    display: none;
+.md-editor.md-fullscreen-mode .md-body {
+    position: absolute;
+    top: 45px;
+    bottom: 99px;
+    left: 0;
+    right: 0;
 }
 
-.md-editor.md-fullscreen-mode .md-input {
+.md-editor.md-fullscreen-mode .md-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px 5% 50px;
+}
+
+.md-editor.md-fullscreen-mode .md-input,
+.md-editor.md-fullscreen-mode .preview-box {
     height: 100% !important;
-    padding: 50px 20%;
+    padding: 50px 5%;
+}
+
+.md-editor.md-fullscreen-mode .btn-smallscreen,
+.md-editor .btn-fullscreen {
+    display: block;
+}
+
+.md-editor .btn-smallscreen,
+.md-editor.md-fullscreen-mode .btn-fullscreen {
+    display: none;
 }
 
 .md-editor .md-header .btn-default {
@@ -18620,6 +18658,11 @@ body.md-nooverflow {
     display: inline-block;
     width: 32px;
     height: 32px;
+    margin-top: 10px;
+}
+
+.icon-preview img {
+    width: 32px;
     margin-top: 10px;
 }
 
@@ -18881,6 +18924,6 @@ body.md-nooverflow {
     margin-bottom: 20px;
 }
 
-.attachment-wrap i{
+.attachment-wrap i {
     color: #999;
 }

@@ -11,13 +11,14 @@ require.config({
         "base": "javascript/base",
         "bootstrap": "plugins/bootstrap/js/bootstrap",
         "bsTable": "plugins/bootstrap-table/bootstrap-table",
-        "wizard": "plugins/bootstrap-wizard/jquery.bootstrap.wizard",
         "markdown": "plugins/markdown-js/markdown",
+        "showdown": "plugins/showdown/showdown.min",
         "jquery-ui/widget": "plugins/fileupload/jquery.ui.widget",
         "iframe-transport": "plugins/fileupload/jquery.iframe-transport",
         "fileupload": "plugins/fileupload/jquery.fileupload",
         "alertify": "plugins/alertify/alertify",
-        "pace": "plugins/pace/pace"
+        "pace": "plugins/pace/pace",
+        "mdeditor": "plugins/jquery.mdeditor"
     },
     //定义依赖
     shim: {
@@ -41,9 +42,6 @@ require.config({
         },
         "bsTable": {
             deps: ["bootstrap"]
-        },
-        "wizard": {
-            deps: ["bootstrap"]
         }
     }
 });
@@ -51,8 +49,6 @@ require.config({
 require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"], function (require) {
     window.alertify = require("alertify");
     window.pace = require("pace");
-
-    alertify.set({delay: 3000});
 
     function startPace() {
         pace.restart({
@@ -77,16 +73,17 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                 routes: {
                     //图标管理
                     "iconManage": "iconCollection",
-                    //添加图标库
-                    "iconManage/addCollection": "collectionAdd",
                     //编辑图标库
                     "iconManage/editCollection/:id": "collectionEdit",
-                    "editIcon/:iconId": "editIcon",
-                    "editIcon": "editIcon",
 
                     //UIKIT管理
                     "uikit": "uikitManage",
                     "uikit/uikitEdit/:id": "uikitEdit",
+
+                    //动效资源管理
+                    "animateManage": "animateManage",
+                    "animateAdd": "animateModify",
+                    "animateEdit": "animateModify",
 
                     //作品池管理
                     "docManage": "docManage",
@@ -98,49 +95,24 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     "designManage": "designManage",
                     "designManageEdit(/:id)": "designManageEdit",
 
+                    "aboutIntro": "aboutIntro",
+
                     //特殊
                     "*action": "iconCollection"
                 },
 
                 iconCollection: function () {
-                    startPace();
-                    require(["javascript/icon/collectionManage.js"], function (module) {
-                        new module;
-                    });
-                },
-
-                collectionAdd: function () {
-                    startPace();
-                    require(["javascript/icon/iconCollectionAdd.js"], function (module) {
-                        new module();
-                    });
+                    viewRender("iconCollectionManage", "javascript/icon/collectionManage");
                 },
 
                 collectionEdit: function (id) {
-                    viewRender("iconCollectionEdit", "javascript/icon/iconCollectionEdit.js", {
+                    viewRender("iconCollectionEdit", "javascript/icon/iconCollectionEdit", {
                         id: id
                     });
                 },
 
-                iconManage: function () {
-                    startPace();
-                    require(["javascript/icon/iconManage.js"], function (module) {
-                        new module;
-                    });
-                },
-
-                editIcon: function (iconId) {
-                    startPace();
-                    require(["javascript/icon/editIcon.js"], function (module) {
-                        new module(iconId);
-                    });
-                },
-
                 uikitManage: function () {
-                    startPace();
-                    require(["javascript/uikit/uikitManage.js"], function (module) {
-                        new module;
-                    });
+                    viewRender("uikitManage", "javascript/uikit/uikitManage");
                 },
 
                 uikitEdit: function (id) {
@@ -148,6 +120,14 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     require(["javascript/uikit/uikitEdit.js"], function (module) {
                         new module(id);
                     });
+                },
+
+                animateManage: function () {
+                    viewRender("animateManage", "javascript/animate/animateManage");
+                },
+
+                animateModify: function () {
+
                 },
 
                 docManage: function () {
@@ -174,6 +154,10 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     require(["javascript/design/designManageEdit.js"], function (module) {
                         new module(id);
                     });
+                },
+
+                aboutIntro: function () {
+                    viewRender("aboutEdit", "javascript/about/aboutEdit");
                 }
             })
         },
