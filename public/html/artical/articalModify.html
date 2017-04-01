@@ -1,0 +1,29 @@
+<div class="page-header">
+    <h1 class="page-title"><% if(_id){ %>编辑文章<% }else{ %>添加文章<% } %></h1>
+</div>
+<div class="page-content" id="articalModify">
+    <div class="panel">
+        <div class="panel-body container-fluid">
+            <form>
+                <div class="form-group">
+                    <input type="text" name="title" class="form-control" value="<%= title %>" placeholder="请输入标题...">
+                </div>
+            </form>
+            <div class="cover-wrapper">
+                <% if(cover_url){ %>
+                <div class="cover-img-wrapper btn-file">
+                    <img class="cover-img" src="<%= cover_url %>">
+                    <input type="file" name="articalCover">
+                </div>
+                <% }else{ %>
+                <div class="btn-upload-cover btn-file">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <p>上传封面</p>
+                    <input type="file" name="articalCover">
+                </div>
+                <% } %>
+            </div>
+            <div id="articalContentEditor"></div>
+        </div>
+    </div>
+</div>

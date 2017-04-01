@@ -3,26 +3,24 @@
  */
 define(["mdeditor"], function (Mdeditor) {
     //动效信息
-    var Animate = Backbone.Model.extend({
-        urlRoot: window.App.apiIp + "/admin/animate/animateInfo",
+    var Artical = Backbone.Model.extend({
+        urlRoot: window.App.apiIp + "/admin/artical/articalInfo",
         idAttribute: "_id",
         defaults: {
             title: "",
-            cover_img_url: null,
-            attachment_url: null,
-            attachment_name: null,
-            content: ""
+            info: "",
+            content: "",
+            cover_url: "",
+            pageviews: 0,
+            author: ""
         },
 
         validate: function (attrs) {
             if (!$.trim(attrs.title)) {
                 return "标题不能为空";
             }
-            if (!attrs.cover_img_url) {
+            if (!attrs.cover_url) {
                 return "请上传封面";
-            }
-            if (!attrs.attachment_url) {
-                return "请上传附件";
             }
             if (!$.trim(attrs.content)) {
                 return "内容不能为空";
@@ -42,23 +40,23 @@ define(["mdeditor"], function (Mdeditor) {
         },
         initialize: function (opts) {
             var that = this;
-            this.template || $.get("/html/animate/animateModify.html").done(function (data) {
+            this.template || $.get("/html/artical/articalModify.html").done(function (data) {
                 that.template = data;
                 that.render(opts);
             });
         },
 
         render: function (opts) {
-            this.animateModel = new Animate();
-            this.animateModel.on("reset change", $.proxy(this.renderPage, this));
+            this.articalModel = new Artical();
+            this.articalModel.on("reset change", $.proxy(this.renderPage, this));
 
-            this.animateModel.on("invalid", function (model, error) {
+            this.articalModel.on("invalid", function (model, error) {
                 alertify.error(error);
             });
 
             if (opts && opts.id) {
-                this.animateModel.set({_id: opts.id}, {silent: true});
-                this.animateModel.update();
+                this.articalModel.set({_id: opts.id}, {silent: true});
+                this.articalModel.update();
             } else {
                 this.renderPage();
             }
@@ -67,25 +65,25 @@ define(["mdeditor"], function (Mdeditor) {
         renderPage: function () {
             var that = this;
             $(".page").html(_.template(this.template)($.extend({}, {
-                _id: this.animateModel.get("_id") || null
-            }, this.animateModel.attributes)));
-            this.setElement("#animateModify");
+                _id: this.articalModel.get("_id") || null
+            }, this.articalModel.attributes)));
+            this.setElement("#articalModify");
 
             this.$title = this.$("[name=title]");
 
-            this.mdeditor = new Mdeditor("#animateContentEditor");
+            this.mdeditor = new Mdeditor("#articalContentEditor");
 
             this.mdeditor.setOption({
                 uploadUrl: window.App.apiIp + "/admin/upload/fileUpload",
                 change: function (content) {
-                    that.animateModel.set({content: content}, {silent: true});
+                    that.articalModel.set({content: content}, {silent: true});
                 },
 
                 submit: function () {
-                    that.animateModel.save(that.animateModel.attributes, {
+                    that.articalModel.save(that.articalModel.attributes, {
                         success: function () {
                             alertify.success("保存成功");
-                            window.location.href = "#animateManage";
+                            window.location.href = "#articalManage";
                         },
                         error: function () {
                             alertify.error("保存失败，请重试！");
@@ -100,44 +98,27 @@ define(["mdeditor"], function (Mdeditor) {
                 fail: function () {
                     alertify.error("保存失败，请重试");
                 }
-            }).setValue(this.animateModel.get("content"));
+            }).setValue(this.articalModel.get("content"));
 
             this.initUpload();
         },
 
+        /**
+         * 初始化封面上传
+         */
         initUpload: function () {
             var that = this;
-            //封面上传
-            this.$("[name=animateCover]").fileupload({
+            this.$("[name=articalCover]").fileupload({
                 url: window.App.apiIp + "/admin/upload/fileUpload",
                 formData: {
-                    name: "animateCover",
+                    name: "articalCover",
                     type: "gif,jpeg,jpg,png,bmp"
                 },
                 done: function (t, result) {
                     var res = result.result;
                     if (res.success) {
                         alertify.success(res.message);
-                        that.animateModel.set("cover_img_url", res.data.url);
-                    } else {
-                        alertify.error(res.message);
-                    }
-                }
-            });
-            //附件上传
-            this.$("[name=attachmentFile]").fileupload({
-                url: window.App.apiIp + "/admin/upload/fileUpload",
-                formData: {
-                    name: "attachmentFile"
-                },
-                done: function (t, result) {
-                    var res = result.result;
-                    if (res.success) {
-                        alertify.success(res.message);
-                        that.animateModel.set({
-                            attachment_url: res.data.url,
-                            attachment_name: res.data.name
-                        });
+                        that.articalModel.set("cover_url", res.data.url);
                     } else {
                         alertify.error(res.message);
                     }
@@ -146,7 +127,7 @@ define(["mdeditor"], function (Mdeditor) {
         },
 
         titleChange: function () {
-            this.animateModel.set({title: this.$title.val()}, {silent: true});
+            this.articalModel.set({title: this.$title.val()}, {silent: true});
         }
     });
 });

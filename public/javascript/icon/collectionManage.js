@@ -108,7 +108,7 @@ define(function (require) {
             if (action == "batchDel") {
                 var selects = this.table.bootstrapTable("getSelections");
                 if (!selects.length) {
-                    alertify.alert("请选择要删除的图标库");
+                    alertify.error("请选择要删除的图标库");
                     return;
                 }
                 $.each(selects, function () {

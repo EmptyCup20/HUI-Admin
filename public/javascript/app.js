@@ -18,6 +18,7 @@ require.config({
         "fileupload": "plugins/fileupload/jquery.fileupload",
         "alertify": "plugins/alertify/alertify",
         "pace": "plugins/pace/pace",
+        "moment": "plugins/moment.min",
         "mdeditor": "plugins/jquery.mdeditor"
     },
     //定义依赖
@@ -85,9 +86,10 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     "animateAdd": "animateModify",
                     "animateEdit/:id": "animateModify",
 
-                    //作品池管理
-                    "docManage": "docManage",
-                    "docManageEdit(/:id)": "docManageEdit",
+                    //文章管理
+                    "articalManage": "articalManage",
+                    "articalAdd": "articalModify",
+                    "articalModify/:id": "articalModify",
 
                     /**
                      * 语言设计管理
@@ -132,17 +134,13 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     });
                 },
 
-                docManage: function () {
-                    startPace();
-                    require(["javascript/doc/docManage.js"], function (module) {
-                        new module;
-                    });
+                articalManage: function () {
+                    viewRender("articalManage", "javascript/artical/articalManage");
                 },
 
-                docManageEdit: function (id) {
-                    startPace();
-                    require(["javascript/doc/docManageEdit.js"], function (module) {
-                        new module(id);
+                articalModify: function (id) {
+                    viewRender("articalModify", "javascript/artical/articalModify", {
+                        id: id
                     });
                 },
 

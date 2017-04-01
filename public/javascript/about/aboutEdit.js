@@ -20,7 +20,7 @@ define(["mdeditor"], function (Mdeditor) {
             this.mdeditor.setOption({
                 url: window.App.apiIp + "/admin/about/update",
 
-                uploadUrl: window.App.apiIp + "/admin/upload/imgUpload",
+                uploadUrl: window.App.apiIp + "/admin/upload/fileUpload",
 
                 uploadFieldName: "aboutImgUpload",
 

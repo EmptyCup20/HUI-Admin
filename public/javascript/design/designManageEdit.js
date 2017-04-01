@@ -42,7 +42,7 @@ define(["markdown", "fileupload"], function (markdown) {
         fileUpload: function () {
             var that = this;
             $("#workImgUpload").fileupload({
-                url: window.App.apiIp + "/admin/upload/imgUpload",
+                url: window.App.apiIp + "/admin/upload/fileUpload",
                 formData: {
                     unique: false,
                     name : "workImgUpload",
@@ -58,7 +58,7 @@ define(["markdown", "fileupload"], function (markdown) {
             });
 
             $("#coverUpload").fileupload({
-                url:window.App.apiIp +  "/admin/upload/imgUpload",
+                url:window.App.apiIp +  "/admin/upload/fileUpload",
                 formData: {
                     unique: false,
                     name : "coverUpload",
@@ -68,7 +68,6 @@ define(["markdown", "fileupload"], function (markdown) {
                     var data = result.result;
                     if (data.success) {
                         $('#coverImg').attr('src',data.data.url);
-                        console.log(data);
                     }else{
                         alert(data.message)
                     }

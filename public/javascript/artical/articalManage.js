@@ -3,11 +3,12 @@
  */
 define(function (require) {
     require('bsTable');
+    var moment = require("moment");
     return Backbone.View.extend({
         events: {
-            "click [data-action=del]": "delAnimate",//删除图标库
-            "click [data-action=batchDel]": "delAnimate",
-            "click [data-action=edit]": "editAnimate"//编辑图标库
+            "click [data-action=del]": "del",//删除图标库
+            "click [data-action=batchDel]": "del",
+            "click [data-action=modify]": "modify"//编辑图标库
         },
 
         initialize: function () {
@@ -19,13 +20,13 @@ define(function (require) {
          */
         render: function () {
             var that = this;
-            $.get("/html/animate/animateManage.html").done(function (data) {
+            $.get("/html/artical/articalManage.html").done(function (data) {
                 $(".page").html(data);
 
                 //定义视图作用域
-                that.setElement("#animateManage");
+                that.setElement("#articalManage");
 
-                that.$table = that.$("#animateList");
+                that.$table = that.$("#articalList");
 
                 that.loadTable();
             })
@@ -36,7 +37,7 @@ define(function (require) {
          */
         loadTable: function () {
             this.$table.bootstrapTable({
-                url: window.App.apiIp + "/admin/animate/getAnimateList",
+                url: window.App.apiIp + "/admin/artical/getArticalList",
                 queryParams: function (params) {
                     return $.extend({}, params, {
                         pageSize: params.limit,
@@ -49,13 +50,16 @@ define(function (require) {
                     checkbox: true
                 }, {
                     field: "title",
-                    title: "标题",
+                    title: "文章标题",
                     formatter: function (v, rowData) {
-                        return "<a data-action='edit'data-id='" + rowData._id + "'>" + v + "</a>";
+                        return "<a data-action='modify'data-id='" + rowData._id + "'>" + v + "</a>";
                     }
                 }, {
-                    field: "attachment_name",
-                    title: "附件名称"
+                    field: "create_at",
+                    title: "发布日期",
+                    formatter: function (v) {
+                        return moment(v).format('YYYY-MM-DD HH:mm:ss');
+                    }
                 }, {
                     title: "操作",
                     width: 120,
@@ -66,19 +70,18 @@ define(function (require) {
                             "</button>";
                     }
                 }],
-                toolbar: "#animateToolbar",
                 pagination: true
             });
         },
 
-        editAnimate: function (e) {
+        modify: function (e) {
             var el = $(e.currentTarget);
             var id = el.data("id");
             e.stopPropagation();
-            window.location.href = "#animateEdit/" + id;
+            window.location.href = "#articalModify/" + id;
         },
 
-        delAnimate: function (e) {
+        del: function (e) {
             var that = this;
             var el = $(e.currentTarget);
             var action = el.data("action");
@@ -87,7 +90,7 @@ define(function (require) {
             if (action == "batchDel") {
                 var selects = this.$table.bootstrapTable("getSelections");
                 if (!selects.length) {
-                    alertify.error("请选择要删除的动效");
+                    alertify.error("请选择要删除的文章");
                     return;
                 }
                 $.each(selects, function () {
@@ -96,10 +99,10 @@ define(function (require) {
             } else {
                 ids.push(el.data("id"));
             }
-            alertify.confirm("确定删除动效？", function (e) {
+            alertify.confirm("确定删除文章？", function (e) {
                 if (e) {
                     $.ajax({
-                        url: window.App.apiIp + "/admin/animate/delAnimate",
+                        url: window.App.apiIp + "/admin/artical/del",
                         method: "post",
                         traditional: true,
                         data: {

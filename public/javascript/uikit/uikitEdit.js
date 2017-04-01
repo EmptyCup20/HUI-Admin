@@ -56,7 +56,7 @@ define(["fileupload"], function () {
         initFileupload: function () {
             var that = this;
             $("[name=img]", this.$el).fileupload({
-                url: window.App.apiIp + "/admin/upload/imgUpload",
+                url: window.App.apiIp + "/admin/upload/fileUpload",
                 formData: {
                     name: "img",
                     type: "png,jpg"
@@ -71,7 +71,7 @@ define(["fileupload"], function () {
                 }
             });
             $("[name=attachment]", this.$el).fileupload({
-                url: window.App.apiIp + "/admin/upload/imgUpload",
+                url: window.App.apiIp + "/admin/upload/fileUpload",
                 formData: {
                     name: "attachment",
                     type: "psd"
