@@ -18864,6 +18864,7 @@ body.md-nooverflow {
 
 .btn-file {
     position: relative;
+    overflow: hidden;
 }
 
 .btn-file input[type="file"] {
