@@ -95,7 +95,7 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                      * 语言设计管理
                      */
                     "designManage": "designManage",
-                    "designManageEdit(/:id)": "designManageEdit",
+                    "designModify(/:type)": "designModify",
 
                     "aboutIntro": "aboutIntro",
 
@@ -145,14 +145,12 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                 },
 
                 designManage: function () {
-                    require(["javascript/design/designManage.js"], function (module) {
-                        new module;
-                    });
+                    viewRender("designManage", "javascript/design/designManage");
                 },
 
-                designManageEdit: function (id) {
-                    require(["javascript/design/designManageEdit.js"], function (module) {
-                        new module(id);
+                designModify: function (type) {
+                    viewRender("designModify", "javascript/design/designModify", {
+                        type: type
                     });
                 },
 
