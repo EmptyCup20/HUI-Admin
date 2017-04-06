@@ -49,7 +49,6 @@ define(["mdeditor"], function (Mdeditor) {
          */
         getContent: function () {
             var that = this;
-
             $.ajax({
                 url: window.App.apiIp + "/admin/uikit/getContent"
             }).done(function (res) {

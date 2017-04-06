@@ -78,7 +78,7 @@ define(function (require) {
             var el = $(e.currentTarget);
             var id = el.data("id");
             e.stopPropagation();
-            window.location.href = "#articalModify/" + id;
+            window.location.href = "#articalManage/modify/" + id;
         },
 
         del: function (e) {

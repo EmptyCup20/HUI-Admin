@@ -75,7 +75,7 @@ define(function (require) {
             var el = $(e.currentTarget);
             var id = el.data("id");
             e.stopPropagation();
-            window.location.href = "#animateEdit/" + id;
+            window.location.href = "#animateManage/modify/" + id;
         },
 
         delAnimate: function (e) {

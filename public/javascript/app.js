@@ -82,19 +82,19 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
 
                     //动效资源管理
                     "animateManage": "animateManage",
-                    "animateAdd": "animateModify",
-                    "animateEdit/:id": "animateModify",
+                    "animateManage/add": "animateModify",
+                    "animateManage/modify/:id": "animateModify",
 
                     //文章管理
                     "articalManage": "articalManage",
-                    "articalAdd": "articalModify",
-                    "articalModify/:id": "articalModify",
+                    "articalManage/add": "articalModify",
+                    "articalManage/modify/:id": "articalModify",
 
                     /**
                      * 语言设计管理
                      */
                     "designManage": "designManage",
-                    "designModify(/:type)": "designModify",
+                    "designManage/modify(/:type)": "designModify",
 
                     "aboutIntro": "aboutIntro",
 
@@ -156,4 +156,12 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
     };
     new App.Routers.Main();
     Backbone.history.start();
+
+    var hashRoot = window.location.hash.split("/")[0];
+
+    $(".site-menu").find("[href=" + hashRoot + "]").parent().addClass("active");
+
+    $(".site-menu").on("click", "li", function () {
+        $(this).addClass("active").siblings().removeClass("active");
+    })
 });
