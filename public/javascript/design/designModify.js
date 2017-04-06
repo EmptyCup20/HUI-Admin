@@ -44,7 +44,7 @@ define(["mdeditor"], function (Mdeditor) {
 
                 uploadUrl: window.App.apiIp + "/admin/upload/fileUpload",
 
-                uploadFieldName: "aboutImgUpload",
+                uploadFieldName: "designImgUpload",
 
                 validate: function (content) {
                     if (!$.trim(content)) {

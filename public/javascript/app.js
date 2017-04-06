@@ -78,8 +78,7 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     "iconManage/editCollection/:id": "collectionEdit",
 
                     //UIKIT管理
-                    "uikit": "uikitManage",
-                    "uikit/uikitEdit/:id": "uikitEdit",
+                    "uikit": "uikitModify",
 
                     //动效资源管理
                     "animateManage": "animateManage",
@@ -113,15 +112,8 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     });
                 },
 
-                uikitManage: function () {
-                    viewRender("uikitManage", "javascript/uikit/uikitManage");
-                },
-
-                uikitEdit: function (id) {
-                    startPace();
-                    require(["javascript/uikit/uikitEdit.js"], function (module) {
-                        new module(id);
-                    });
+                uikitModify: function () {
+                    viewRender("uikitModify", "javascript/uikit/uikitModify");
                 },
 
                 animateManage: function () {
