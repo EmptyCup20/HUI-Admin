@@ -18340,6 +18340,7 @@ body.md-nooverflow {
 .navbar-brand {
     float: none;
     text-align: center;
+    line-height: 36px;
 }
 
 .navbar-brand-text {
