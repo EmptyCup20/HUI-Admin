@@ -11,8 +11,7 @@ define(["mdeditor"], function (Mdeditor) {
             info: "",
             content: "",
             cover_url: "",
-            pageviews: 0,
-            author: ""
+            pageviews: 0
         },
 
         validate: function (attrs) {
