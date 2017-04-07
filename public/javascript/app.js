@@ -86,9 +86,9 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     "animateManage/modify/:id": "animateModify",
 
                     //文章管理
-                    "articalManage": "articalManage",
-                    "articalManage/add": "articalModify",
-                    "articalManage/modify/:id": "articalModify",
+                    "articleManage": "articleManage",
+                    "articleManage/add": "articleModify",
+                    "articleManage/modify/:id": "articleModify",
 
                     /**
                      * 语言设计管理
@@ -126,12 +126,12 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
                     });
                 },
 
-                articalManage: function () {
-                    viewRender("articalManage", "javascript/artical/articalManage");
+                articleManage: function () {
+                    viewRender("articleManage", "javascript/article/articleManage");
                 },
 
-                articalModify: function (id) {
-                    viewRender("articalModify", "javascript/artical/articalModify", {
+                articleModify: function (id) {
+                    viewRender("articleModify", "javascript/article/articleModify", {
                         id: id
                     });
                 },

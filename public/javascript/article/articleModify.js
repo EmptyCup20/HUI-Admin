@@ -3,8 +3,8 @@
  */
 define(["mdeditor"], function (Mdeditor) {
     //动效信息
-    var Artical = Backbone.Model.extend({
-        urlRoot: window.App.apiIp + "/admin/artical/articalInfo",
+    var Article = Backbone.Model.extend({
+        urlRoot: window.App.apiIp + "/admin/article/articleInfo",
         idAttribute: "_id",
         defaults: {
             title: "",
@@ -39,23 +39,23 @@ define(["mdeditor"], function (Mdeditor) {
         },
         initialize: function (opts) {
             var that = this;
-            this.template || $.get("/html/artical/articalModify.html").done(function (data) {
+            this.template || $.get("/html/article/articleModify.html").done(function (data) {
                 that.template = data;
                 that.render(opts);
             });
         },
 
         render: function (opts) {
-            this.articalModel = new Artical();
-            this.articalModel.on("reset change", $.proxy(this.renderPage, this));
+            this.articleModel = new Article();
+            this.articleModel.on("reset change", $.proxy(this.renderPage, this));
 
-            this.articalModel.on("invalid", function (model, error) {
+            this.articleModel.on("invalid", function (model, error) {
                 alertify.error(error);
             });
 
             if (opts && opts.id) {
-                this.articalModel.set({_id: opts.id}, {silent: true});
-                this.articalModel.update();
+                this.articleModel.set({_id: opts.id}, {silent: true});
+                this.articleModel.update();
             } else {
                 this.renderPage();
             }
@@ -64,25 +64,25 @@ define(["mdeditor"], function (Mdeditor) {
         renderPage: function () {
             var that = this;
             $(".page").html(_.template(this.template)($.extend({}, {
-                _id: this.articalModel.get("_id") || null
-            }, this.articalModel.attributes)));
-            this.setElement("#articalModify");
+                _id: this.articleModel.get("_id") || null
+            }, this.articleModel.attributes)));
+            this.setElement("#articleModify");
 
             this.$title = this.$("[name=title]");
 
-            this.mdeditor = new Mdeditor("#articalContentEditor");
+            this.mdeditor = new Mdeditor("#articleContentEditor");
 
             this.mdeditor.setOption({
                 uploadUrl: window.App.apiIp + "/admin/upload/fileUpload",
                 change: function (content) {
-                    that.articalModel.set({content: content}, {silent: true});
+                    that.articleModel.set({content: content}, {silent: true});
                 },
 
                 submit: function () {
-                    that.articalModel.save(that.articalModel.attributes, {
+                    that.articleModel.save(that.articleModel.attributes, {
                         success: function () {
                             alertify.success("保存成功");
-                            window.location.href = "#articalManage";
+                            window.location.href = "#articleManage";
                         },
                         error: function () {
                             alertify.error("保存失败，请重试！");
@@ -97,7 +97,7 @@ define(["mdeditor"], function (Mdeditor) {
                 fail: function () {
                     alertify.error("保存失败，请重试");
                 }
-            }).setValue(this.articalModel.get("content"));
+            }).setValue(this.articleModel.get("content"));
 
             this.initUpload();
         },
@@ -107,17 +107,17 @@ define(["mdeditor"], function (Mdeditor) {
          */
         initUpload: function () {
             var that = this;
-            this.$("[name=articalCover]").fileupload({
+            this.$("[name=articleCover]").fileupload({
                 url: window.App.apiIp + "/admin/upload/fileUpload",
                 formData: {
-                    name: "articalCover",
+                    name: "articleCover",
                     type: "gif,jpeg,jpg,png,bmp"
                 },
                 done: function (t, result) {
                     var res = result.result;
                     if (res.success) {
                         alertify.success(res.message);
-                        that.articalModel.set("cover_url", res.data.url);
+                        that.articleModel.set("cover_url", res.data.url);
                     } else {
                         alertify.error(res.message);
                     }
@@ -126,7 +126,7 @@ define(["mdeditor"], function (Mdeditor) {
         },
 
         titleChange: function () {
-            this.articalModel.set({title: this.$title.val()}, {silent: true});
+            this.articleModel.set({title: this.$title.val()}, {silent: true});
         }
     });
 });

@@ -1,7 +1,7 @@
 <div class="page-header">
     <h1 class="page-title"><% if(_id){ %>编辑文章<% }else{ %>添加文章<% } %></h1>
 </div>
-<div class="page-content" id="articalModify">
+<div class="page-content" id="articleModify">
     <div class="panel">
         <div class="panel-body container-fluid">
             <form>
@@ -13,17 +13,17 @@
                 <% if(cover_url){ %>
                 <div class="cover-img-wrapper btn-file">
                     <img class="cover-img" src="<%= cover_url %>">
-                    <input type="file" name="articalCover">
+                    <input type="file" name="articleCover">
                 </div>
                 <% }else{ %>
                 <div class="btn-upload-cover btn-file">
                     <i class="glyphicon glyphicon-plus"></i>
                     <p>上传封面</p>
-                    <input type="file" name="articalCover">
+                    <input type="file" name="articleCover">
                 </div>
                 <% } %>
             </div>
-            <div id="articalContentEditor"></div>
+            <div id="articleContentEditor"></div>
         </div>
     </div>
 </div>

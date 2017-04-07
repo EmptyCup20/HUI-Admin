@@ -20,13 +20,13 @@ define(function (require) {
          */
         render: function () {
             var that = this;
-            $.get("/html/artical/articalManage.html").done(function (data) {
+            $.get("/html/article/articleManage.html").done(function (data) {
                 $(".page").html(data);
 
                 //定义视图作用域
-                that.setElement("#articalManage");
+                that.setElement("#articleManage");
 
-                that.$table = that.$("#articalList");
+                that.$table = that.$("#articleList");
 
                 that.loadTable();
             })
@@ -37,7 +37,7 @@ define(function (require) {
          */
         loadTable: function () {
             this.$table.bootstrapTable({
-                url: window.App.apiIp + "/admin/artical/getArticalList",
+                url: window.App.apiIp + "/admin/article/getArticleList",
                 queryParams: function (params) {
                     return $.extend({}, params, {
                         pageSize: params.limit,
@@ -78,7 +78,7 @@ define(function (require) {
             var el = $(e.currentTarget);
             var id = el.data("id");
             e.stopPropagation();
-            window.location.href = "#articalManage/modify/" + id;
+            window.location.href = "#articleManage/modify/" + id;
         },
 
         del: function (e) {
@@ -102,7 +102,7 @@ define(function (require) {
             alertify.confirm("确定删除文章？", function (e) {
                 if (e) {
                     $.ajax({
-                        url: window.App.apiIp + "/admin/artical/del",
+                        url: window.App.apiIp + "/admin/article/del",
                         method: "post",
                         traditional: true,
                         data: {
