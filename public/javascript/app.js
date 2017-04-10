@@ -51,13 +51,13 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
     window.alertify = require("alertify");
     window.pace = require("pace");
 
-    $.ajaxSetup({
-        complete: function (XMLHttpRequest, textStatus) {
-            if (XMLHttpRequest.responseText.indexOf('unlogin') != -1) {
-                window.location.href = "/login";
-            }
-        }
-    });
+    //$.ajaxSetup({
+    //    complete: function (XMLHttpRequest, textStatus) {
+    //        if (XMLHttpRequest.responseText.indexOf('unlogin') != -1) {
+    //            window.location.href = "/login";
+    //        }
+    //    }
+    //});
 
     function startPace() {
         pace.restart({
