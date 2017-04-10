@@ -22,6 +22,7 @@
                 data: formData
             }).done(function (data) {
                 if (data.success) {
+                    localStorage.accessToken = data.token;
                     window.location.href = "/";
                 } else {
                     alert(data.message);
