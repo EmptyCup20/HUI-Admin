@@ -51,6 +51,14 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
     window.alertify = require("alertify");
     window.pace = require("pace");
 
+    $.ajaxSetup({
+        complete: function (XMLHttpRequest, textStatus) {
+            if (XMLHttpRequest.responseText.indexOf('unlogin') != -1) {
+                window.location.href = "/login";
+            }
+        }
+    });
+
     function startPace() {
         pace.restart({
             document: false
@@ -159,7 +167,11 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
 
     var hashRoot = window.location.hash.split("/")[0];
 
-    $(".site-menu").find("[href=" + hashRoot + "]").parent().addClass("active");
+    if (hashRoot) {
+        $(".site-menu").find("[href=" + hashRoot + "]").parent().addClass("active");
+    } else {
+        $(".site-menu>li:first").addClass("active");
+    }
 
     $(".site-menu").on("click", "li", function () {
         $(this).addClass("active").siblings().removeClass("active");
