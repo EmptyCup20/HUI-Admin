@@ -24,8 +24,8 @@ gulp.task('concatCss', function () {
 
 gulp.task('browser-sync', function () {
     browserSync.init({
-        proxy: "http://10.20.134.30:7001/",
-        files: ["index.html", "public/css/**/*", "public/html/**/*"],
+        proxy: "http://10.20.134.30:8080/",
+        files: ["index.html", "login.html", "public/css/**/*", "public/html/**/*"],
         port: 8001
     });
 });

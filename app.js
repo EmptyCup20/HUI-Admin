@@ -8,12 +8,23 @@ app.set('views', path.join(__dirname));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/login", function (req, res) {
-    res.sendFile(path.join(__dirname, 'login.html'));
-});
-
-app.use('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'index.html'));
+app.use('/', function (req, res, next) {
+    var cookie = req.headers.cookie;
+    if (req.url === "/favicon.ico") {
+        next();
+    } else if (cookie.indexOf("accessToken") !== -1) {
+        if (req.url !== "/login") {
+            res.sendFile(path.join(__dirname, 'index.html'));
+        } else {
+            res.redirect("/");
+        }
+    } else {
+        if (req.url !== "/login") {
+            res.redirect("/login");
+        } else {
+            res.sendFile(path.join(__dirname, 'login.html'));
+        }
+    }
 });
 
 var server = app.listen(8080, function () {

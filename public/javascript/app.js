@@ -11,6 +11,7 @@ require.config({
         "base": "javascript/base",
         "bootstrap": "plugins/bootstrap/js/bootstrap",
         "bsTable": "plugins/bootstrap-table/bootstrap-table",
+        "bsModel": "plugins/bootstrapModel",
         "markdown": "plugins/markdown-js/markdown",
         "showdown": "plugins/showdown/showdown.min",
         "jquery-ui/widget": "plugins/fileupload/jquery.ui.widget",
@@ -47,13 +48,13 @@ require.config({
     }
 });
 
-require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"], function (require) {
+require(["require", "backbone", "bootstrap", "bsModel", "alertify", "pace", "util", "base"], function (require) {
     window.alertify = require("alertify");
     window.pace = require("pace");
 
     $.ajaxSetup({
         beforeSend: function (request) {
-            request.setRequestHeader("x-access-token", localStorage.accessToken);
+            request.setRequestHeader("x-access-token", getCookie("accessToken"));
         },
         complete: function (XMLHttpRequest, textStatus) {
             if (XMLHttpRequest.responseText.indexOf('unlogin') != -1) {
@@ -179,4 +180,9 @@ require(["require", "backbone", "bootstrap", "util", "base", "alertify", "pace"]
     $(".site-menu").on("click", "li", function () {
         $(this).addClass("active").siblings().removeClass("active");
     })
+
+    $(".navbar-action-logout").on("click", function () {
+        deleteCookie("accessToken");
+        window.location.href = "/login";
+    });
 });

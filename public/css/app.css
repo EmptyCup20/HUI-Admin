@@ -18371,7 +18371,7 @@ body.md-nooverflow {
     font-family: Microsoft YaHei;
 }
 
-.site-menubar-unfold .site-menu > .site-menu-item > a{
+.site-menubar-unfold .site-menu > .site-menu-item > a {
     line-height: 42px;
 }
 
@@ -18974,4 +18974,58 @@ body.md-nooverflow {
     height: 80px;
     vertical-align: middle;
     border-radius: 4px;
+}
+
+.navbar-action {
+    width: 100% !important;
+    float: none !important;
+}
+
+.page-login {
+    padding: 0;
+    background: url(images/login.jpg) no-repeat;
+}
+
+.page-overlay {
+    height: 100%;
+    background-color: rgba(0, 0, 0, .3);
+    font-family: 'opensans';
+}
+
+.vertical-align:before {
+    display: inline-block;
+    content: "";
+    height: 100%;
+    vertical-align: middle;
+}
+
+.vertical-align-middle {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+}
+
+.page-login form {
+    width: 340px;
+    margin: 30px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.brand-img {
+    width: 60px;
+}
+
+.brand-text {
+    font-family: 'opensans';
+    font-size: 24px;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.page-copyright {
+    color: #fff;
 }

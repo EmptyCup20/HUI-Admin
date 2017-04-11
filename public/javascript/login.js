@@ -22,7 +22,7 @@
                 data: formData
             }).done(function (data) {
                 if (data.success) {
-                    localStorage.accessToken = data.token;
+                    addCookie("accessToken", data.token, 15 * 24);
                     window.location.href = "/";
                 } else {
                     alert(data.message);
