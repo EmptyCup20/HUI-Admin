@@ -12,7 +12,7 @@ app.use('/', function (req, res, next) {
     var cookie = req.headers.cookie;
     if (req.url === "/favicon.ico") {
         next();
-    } else if (cookie.indexOf("accessToken") !== -1) {
+    } else if (cookie && cookie.indexOf("accessToken") !== -1) {
         if (req.url !== "/login") {
             res.sendFile(path.join(__dirname, 'index.html'));
         } else {
