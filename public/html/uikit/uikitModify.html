@@ -4,6 +4,18 @@
 <div class="page-content" id="uikitModify">
     <div class="panel">
         <div class="panel-body container-fluid">
+            <% if(attachment_name){ %>
+            <div class="alert alert-success">
+                附件：
+                <i class="glyphicon glyphicon-paperclip"></i>
+                <a href="<%= attachment_url %>"><%= attachment_name %></a>
+                <a class="btn-file">重新上传<input type="file" name="attachmentFile"></a>
+            </div>
+            <% }else{ %>
+            <div class="alert alert-warning">
+                暂无附件<a class="btn-file">点此上传<input type="file" name="attachmentFile"></a>
+            </div>
+            <% } %>
             <div id="uikitEditor"></div>
         </div>
     </div>
