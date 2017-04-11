@@ -2,18 +2,25 @@
  * Created by zhengjunling on 2017/4/7.
  */
 ;(function ($) {
+    "use strict";
     $(function () {
+        $(document).on("keypress", function (e) {
+            if (e.keyCode === 13) {
+                $("#loginSubmit").click();
+            }
+        });
+
         $("#loginSubmit").on("click", function () {
             var formData = {
                 username: $("[name=username]").val(),
                 password: $("[name=password]").val()
             };
             if (!formData.username) {
-                alert("请输入用户名");
+                alertify.error("请输入用户名");
                 return;
             }
             if (!formData.password) {
-                alert("请输入密码");
+                alertify.error("请输入密码");
                 return;
             }
             $.ajax({
