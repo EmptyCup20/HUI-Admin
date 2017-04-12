@@ -1,7 +1,21 @@
 # HUI-Admin
+
 ## 启动项目
 - `npm install` 安装项目依赖
 - `node app.js` 启动项目
 - `localhost:8080` 访问项目，默认端口为8080
 
- 如果自己启动后台（hui），需要在`public/javascript/app.js`中将`window.App.apiIp`改成自己的后台接口地址
+## 注意事项
+- 运行项目需确保HUI项目已启动，且HUI-Admin的public文件夹下的login.js和app.js里的ajax路径ip和端口需改为当前运行的HUI服务端的ip与端口
+
+## 当前版本优化
+- 优化图标管理交互方式
+- 优化UIKIT管理交互方式
+- 将文章管理与设计规范文档分离
+- 优化md文档编辑体验
+
+## 新增功能
+- 新增关于我们模块内容编辑
+- 新增图标批量上传与删除功能
+- 新增动效资源管理模块功能
+- 新增用户登录功能
